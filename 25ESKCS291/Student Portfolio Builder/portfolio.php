@@ -6,6 +6,66 @@ if(!isset($_SESSION['user_id']))
     header("Location: login.php");
     exit();
 }
+if(isset($_POST['save_portfolio']))
+{
+    $user_id = $_SESSION['user_id'];
+    $about = $_POST['about'];
+    $education = $_POST['education'];
+    $current_sem = $_POST['current_sem'];
+    $cgpa = $_POST['cgpa'];
+    $skills = $_POST['skills'];
+    $projects = $_POST['projects'];
+    $certifications = $_POST['certifications'];
+    $internships = $_POST['internships'];
+    $achievements = $_POST['achievements'];
+    $languages = $_POST['languages'];
+    $github = $_POST['github'];
+    $linkedin = $_POST['linkedin'];
+    $contact_email = $_POST['contact_email'];
+    $check = "SELECT * FROM portfolio WHERE user_id='$user_id'";
+    $check_result = mysqli_query($conn, $check);
+    if(mysqli_num_rows($check_result) > 0)
+    {
+        $sql = "UPDATE portfolio SET
+                about='$about',
+                education='$education',
+                current_sem='$current_sem',
+                cgpa='$cgpa',
+                skills='$skills',
+                projects='$projects',
+                certifications='$certifications',
+                internships='$internships',
+                achievements='$achievements',
+                languages='$languages',
+                github='$github',
+                linkedin='$linkedin',
+                contact_email='$contact_email',
+                updated_at=NOW()
+                WHERE user_id='$user_id'";
+    }
+    else
+    {
+        $sql = "INSERT INTO portfolio
+                (user_id, about, education, current_sem, cgpa, skills, projects,
+                certifications, internships, achievements, languages,
+                github, linkedin, contact_email, status)
+                VALUES
+                ('$user_id', '$about', '$education', '$current_sem', '$cgpa',
+                '$skills', '$projects', '$certifications', '$internships',
+                '$achievements', '$languages', '$github', '$linkedin',
+                '$contact_email', 'draft')";
+    }
+    $result = mysqli_query($conn, $sql);
+
+    if($result)
+    {
+        echo "<script>alert('Portfolio Saved Successfully');</script>";
+    }
+    else
+    {
+        echo "<script>alert('Error Saving Portfolio');</script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
